@@ -10,6 +10,10 @@ namespace Forecasting.Sales.Entity
         [Column("product_id")]
         public int ProductId { get; set; }
 
+        [MaxLength(10)]
+        [Column("identificator")]
+        public required string Identificator { get; set; }
+
         [Required]
         [MaxLength(100)]
         [Column("product_name")]

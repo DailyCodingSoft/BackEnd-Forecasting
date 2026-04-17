@@ -14,10 +14,6 @@ namespace Forecasting.Sales.Entity
         [Column("product_id")]
         public int ProductId { get; set; }
 
-        [MaxLength(10)]
-        [Column("identificator")]
-        public required string Identificator { get; set; }
-
         [Column("quantity", TypeName = "numeric(10,2)")]
         public decimal Quantity { get; set; }
 
