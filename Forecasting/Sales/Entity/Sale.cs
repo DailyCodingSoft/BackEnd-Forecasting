@@ -8,6 +8,7 @@ namespace Forecasting.Sales.Entity
     {
         [Key]
         [Column("sale_id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SaleId { get; set; }
 
         [ForeignKey("Product")]

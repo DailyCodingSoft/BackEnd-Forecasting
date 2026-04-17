@@ -8,6 +8,7 @@ namespace Forecasting.Sales.Entity
     {
         [Key]
         [Column("product_id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProductId { get; set; }
 
         [MaxLength(10)]
