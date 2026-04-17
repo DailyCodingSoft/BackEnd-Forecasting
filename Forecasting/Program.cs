@@ -1,4 +1,5 @@
 using Forecasting.Data;
+using Forecasting.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 var connectionString = builder.Configuration.GetConnectionString("DevConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddScoped<SalesRepository>();
 
 var app = builder.Build();
 
