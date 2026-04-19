@@ -10,5 +10,11 @@ namespace Forecasting.Repositories
         {
             return await _context.Sales.Include(s => s.Product).ToListAsync();
         }
+
+        public async void AddRange(List<Sale> sales)
+        {
+            _context.Sales.AddRange(sales);
+            _context.SaveChanges();
+        }
     }
 }

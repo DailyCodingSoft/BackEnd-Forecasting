@@ -12,6 +12,7 @@ var connectionString = builder.Configuration.GetConnectionString("DevConnection"
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddScoped<SalesRepository>();
+builder.Services.AddScoped<ProductsRepository>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "AllowDevCors",

@@ -23,5 +23,14 @@ namespace Forecasting.Utils
             Week = sale.Week,
             Date = sale.Date
         };
+
+        public static Sale MapSaleDtoToSale(SaleDto saleDto, Product saleDtoProduct) => new()
+        {
+            Product = saleDtoProduct,
+            ProductId = saleDtoProduct.ProductId,
+            Quantity = saleDto.Quantity,
+            Week = saleDto.Week,
+            Date = saleDto.Date
+        };
     }
 }
