@@ -11,12 +11,13 @@ namespace Forecasting.Controllers
     public class SalesController(SalesRepository _salesRepository, ProductsRepository _productsRepository) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<SalesTableDto>> GetSales()
+        public async Task<ActionResult<SalesTableDto>> GetSales(int? product)
         {
-            List<Sale> dbSales = await _salesRepository.GetSalesAsync();
+            List<Sale> dbSales = await _salesRepository.GetSalesAsync(product);
             SalesTableDto response = SalesMapper.MapSaleListToSalesTableDto(dbSales);
             return Ok(response);
         }
+
 
         [HttpPost]
         public async Task<ActionResult> PostSales(SalesDto sales)
@@ -33,5 +34,7 @@ namespace Forecasting.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
     }
 }

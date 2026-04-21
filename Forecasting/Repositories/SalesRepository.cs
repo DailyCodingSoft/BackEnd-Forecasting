@@ -6,9 +6,13 @@ namespace Forecasting.Repositories
 {
     public class SalesRepository(AppDbContext _context)
     {
-        public async Task<List<Sale>> GetSalesAsync()
+        public async Task<List<Sale>> GetSalesAsync(int? product = null)
         {
-            return await _context.Sales.Include(s => s.Product).ToListAsync();
+            var query = _context.Sales.Include(s => s.Product).AsQueryable();
+            if (product.HasValue) { 
+                query = query.Where(s => s.ProductId == product.Value);
+            }
+            return await query.ToListAsync();
         }
 
         public async void AddRange(List<Sale> sales)
