@@ -1,4 +1,4 @@
-﻿using Forecasting.Repositories;
+using Forecasting.Repositories;
 using Forecasting.Sales;
 using Forecasting.Sales.Entity;
 using Forecasting.Utils;
@@ -8,7 +8,7 @@ namespace Forecasting.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalesController(SalesRepository _salesRepository, ProductsRepository _productsRepository) : ControllerBase
+    public class SalesController(SalesRepository _salesRepository, ProductsRepository _productsRepository, SalesService _salesService) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<SalesTableDto>> GetSales()
@@ -23,7 +23,7 @@ namespace Forecasting.Controllers
         {
             try
             {
-                SalesService salesService = new(_productsRepository);
+                SalesService salesService = new(_salesRepository, _productsRepository);
                 List<Sale> saleList = salesService.SaveSaleList(sales);
                 _salesRepository.AddRange(saleList);
                 return Ok("Sale List Saved Correctly!.");
@@ -32,6 +32,18 @@ namespace Forecasting.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+        
+        [HttpGet]
+        [Route("grouped")]
+        public async Task<IActionResult> GetSalesGrouped(
+            [FromQuery] string? identificator,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? to)
+        {
+            SalesService salesService = new(_salesRepository, _productsRepository);
+            var result = await salesService.GetSalesGroupedAsync(identificator, from, to);
+            return Ok(result);
         }
     }
 }

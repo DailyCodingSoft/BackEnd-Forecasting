@@ -1,4 +1,4 @@
-﻿using Forecasting.Data;
+using Forecasting.Data;
 using Forecasting.Sales.Entity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +15,40 @@ namespace Forecasting.Repositories
         {
             _context.Sales.AddRange(sales);
             _context.SaveChanges();
+        }
+
+        public async Task AddRangeAsync(List<Sale> sales)
+        {
+            await _context.Sales.AddRangeAsync(sales);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Product>> GetProductsWithSalesAsync(
+            string? identificator,
+            DateTime? from,
+            DateTime? to)
+        {
+            DateTime? fromUtc = from.HasValue ? DateTime.SpecifyKind(from.Value, DateTimeKind.Utc) : null;
+            DateTime? toUtc = to.HasValue ? DateTime.SpecifyKind(to.Value.Date.AddDays(1).AddTicks(-1), DateTimeKind.Utc) : null;
+            var query = _context.Products
+                .Include(p => p.Sales)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(identificator))
+                query = query.Where(p => p.Identificator == identificator);
+
+            if (fromUtc.HasValue)
+                query = query.Where(p => p.Sales.Any(s => s.Date >= fromUtc));
+
+            if (toUtc.HasValue)
+                query = query.Where(p => p.Sales.Any(s => s.Date <= toUtc));
+            
+            query = query.Include(p => p.Sales.Where(s =>
+                (fromUtc == null || s.Date >= fromUtc) &&
+                (toUtc == null || s.Date <= toUtc)
+            ));
+            var result = await query.ToListAsync();
+            return result;
         }
     }
 }

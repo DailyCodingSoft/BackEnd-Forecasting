@@ -1,6 +1,7 @@
 using Forecasting.Data;
 using Forecasting.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Forecasting.Sales;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ var connectionString = builder.Configuration.GetConnectionString("DevConnection"
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddScoped<SalesRepository>();
 builder.Services.AddScoped<ProductsRepository>();
+builder.Services.AddScoped<SalesService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "AllowDevCors",

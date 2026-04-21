@@ -1,4 +1,4 @@
-﻿using Forecasting.Data;
+using Forecasting.Data;
 using Forecasting.Sales.Entity;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +10,11 @@ namespace Forecasting.Repositories
         public Product? GetProductByIdentificator(string identificator)
         {
             return _context.Products.FirstOrDefault(p => p.Identificator.Equals(identificator));
+        }
+
+        public async Task<Product?> GetProductByIdentificatorAsync(string identificator)
+        {
+            return await _context.Products.FirstOrDefaultAsync(p => p.Identificator.Equals(identificator));
         }
     }
 }
