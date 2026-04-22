@@ -1,4 +1,4 @@
-appsettings.*
+appsettings.json
 .editorconfig
 *.env
 .env.*
