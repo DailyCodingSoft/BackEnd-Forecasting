@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: forecasting-api
+    restart: unless-stopped
+    ports:
+      - "5289:5289"
+    depends_on:
+      - db
+    environment:
+      -  ASPNETCORE_URLS=http://+:5289
+      -  ConnectionStrings__Default=Host=db;Port=5432;Database=forecastingprod;Username=admin;Password=LosAndinones
+  
+  db:
+    image: postgres:15
+    container_name: postgres-prod
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: LosAndinones
+      POSTGRES_DB: forecastingprod
+
+    volumes:
+      - /opt/postgres-data:/var/lib/postgresql/data
+
+    ports:
+      - "5432:5432"
+

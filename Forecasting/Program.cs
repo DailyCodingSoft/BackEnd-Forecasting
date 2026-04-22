@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-var connectionString = builder.Configuration.GetConnectionString("DevConnection");
+var connectionString = builder.Configuration.GetConnectionString("Default");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddScoped<SalesRepository>();
@@ -26,10 +26,18 @@ builder.Services.AddCors(options =>
         });
 });
 
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-app.UseHttpsRedirection();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
+//We can remove this line while we use this as a container only accesed 
+//throug nginx proxy.
+//app.UseHttpsRedirection();
 
 app.UseCors("AllowDevCors");
 
