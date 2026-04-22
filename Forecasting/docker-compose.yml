@@ -11,7 +11,7 @@ services:
       - db
     environment:
       -  ASPNETCORE_URLS=http://+:5289
-      -  ConnectionStrings__Default=Host=db;Port=5432;Database=forecastingprod;Username=admin;Password=LosAndinones
+      -  ConnectionStrings__Default=Host=db;Port=5432;Database=forecastingprod;Username=admin;Password=${DB_PASSWORD}
   
   db:
     image: postgres:15
@@ -20,7 +20,7 @@ services:
 
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: LosAndinones
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: forecastingprod
 
     volumes:
