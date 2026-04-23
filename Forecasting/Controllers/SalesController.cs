@@ -8,7 +8,7 @@ namespace Forecasting.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalesController(SalesRepository _salesRepository, ProductsRepository _productsRepository, SalesService _salesService) : ControllerBase
+    public class SalesController(SalesRepository _salesRepository, ProductsRepository _productsRepository) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<SalesTableDto>> GetSales()
