@@ -8,7 +8,7 @@ namespace Forecasting.Utils
         {
             SalesTableDto salesDto = new()
             {
-                Columns = [.. typeof(SaleDto).GetProperties().Select(p => p.Name)],
+                Columns = [.. typeof(SaleDto).GetProperties().Select(p => ChangeFirstLetterToLowerCase(p.Name))],
                 Rows = [.. sales.Select(MapSaleToSaleDto)]
             };
 
@@ -32,5 +32,13 @@ namespace Forecasting.Utils
             Week = saleDto.Week,
             Date = saleDto.Date
         };
+
+        private static String ChangeFirstLetterToLowerCase(String columnName)
+        {
+            String result = "";
+            result += columnName[0].ToString().ToLower();
+            result += columnName.Substring(1);
+            return result;
+        }
     }
 }
