@@ -16,5 +16,9 @@ namespace Forecasting.Repositories
         {
             return await _context.Products.FirstOrDefaultAsync(p => p.Identificator.Equals(identificator));
         }
+        public async Task<List<Product>> GetProductsAsync()
+        {
+            return await _context.Products.ToListAsync();
+        }
     }
 }
