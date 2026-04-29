@@ -8,10 +8,10 @@ namespace Forecasting.Controllers
     [ApiController]
     public class PredictionsController(PredictionClient _predictionClient) : ControllerBase
     {
-        [HttpGet]
-        public async Task<ActionResult<ForecastResponse>> GetForecast()
+        [HttpGet("{product_identifier}")]
+        public async Task<ActionResult<ForecastResponse>> GetForecast(string product_identifier)
         {
-            ForecastResponse response = await _predictionClient.GetPrediction("001");
+            ForecastResponse response = await _predictionClient.GetPrediction(product_identifier);
             return Ok(response);
         }
     }
