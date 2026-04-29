@@ -3,6 +3,6 @@
     public class SalesTableDto
     {
         public required SaleDto[] Rows { get; set; }
-        public required String[] Columns {  get; set; }
+        public required string[] Columns {  get; set; }
     }
 }

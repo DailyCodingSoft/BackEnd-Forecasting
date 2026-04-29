@@ -33,9 +33,9 @@ namespace Forecasting.Utils
             Date = saleDto.Date
         };
 
-        private static String ChangeFirstLetterToLowerCase(String columnName)
+        private static string ChangeFirstLetterToLowerCase(string columnName)
         {
-            String result = "";
+            string result = "";
             result += columnName[0].ToString().ToLower();
             result += columnName.Substring(1);
             return result;
