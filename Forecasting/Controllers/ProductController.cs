@@ -1,5 +1,5 @@
-﻿using Forecasting.Repositories;
-using Forecasting.Sales.Entity;
+﻿using Forecasting.Products.Entity;
+using Forecasting.Repositories;
 using Forecasting.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +15,6 @@ namespace Forecasting.Controllers
             List<Product> dbProduct = await _productsRepository.GetProductsAsync();
             List<ProductFilterDto> response = ProductMapper.MapProductsToDto(dbProduct);
             return Ok(response);
-
         }
-
-
     }
 }

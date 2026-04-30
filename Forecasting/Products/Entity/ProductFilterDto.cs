@@ -1,4 +1,4 @@
-﻿namespace Forecasting.Sales.Entity
+﻿namespace Forecasting.Products.Entity
 {
     public class ProductFilterDto
     {

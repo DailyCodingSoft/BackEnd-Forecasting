@@ -1,4 +1,5 @@
 using Forecasting.Data;
+using Forecasting.Products.Entity;
 using Forecasting.Sales.Entity;
 using Microsoft.EntityFrameworkCore;
 
