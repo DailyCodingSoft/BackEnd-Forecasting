@@ -1,4 +1,4 @@
-﻿using Forecasting.Sales.Entity;
+﻿using Forecasting.Products.Entity;
 
 namespace Forecasting.Utils
 {

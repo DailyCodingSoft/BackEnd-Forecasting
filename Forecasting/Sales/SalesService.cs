@@ -1,3 +1,4 @@
+using Forecasting.Products.Entity;
 using Forecasting.Repositories;
 using Forecasting.Sales.Entity;
 using Forecasting.Utils;
