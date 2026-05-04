@@ -10,9 +10,9 @@ services:
     depends_on:
       - db
     environment:
-      -  ASPNETCORE_URLS=http://+:5289
-      -  ConnectionStrings__Default=Host=db;Port=5432;Database=forecastingprod;Username=admin;Password=${DB_PASSWORD}
-  
+      - ASPNETCORE_URLS=http://+:5289
+      - ConnectionStrings__Default=Host=db;Port=5432;Database=forecastingprod;Username=admin;Password=${DB_PASSWORD}
+
   db:
     image: postgres:15
     container_name: postgres-prod
@@ -29,3 +29,13 @@ services:
     ports:
       - "5432:5432"
 
+  ml-engine:
+    build: ../../ML-Engine-Forecasting
+    container_name: ml-engine
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      - API_URL=http://api:5289
+    ports:
+      - "8000:8000"
