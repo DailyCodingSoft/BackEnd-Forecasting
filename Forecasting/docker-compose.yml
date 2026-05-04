@@ -33,5 +33,9 @@ services:
     build: ../../ML-Engine-Forecasting
     container_name: ml-engine
     restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      - API_URL=http://api:5289
     ports:
       - "8000:8000"
