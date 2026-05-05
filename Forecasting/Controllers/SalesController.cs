@@ -36,10 +36,10 @@ namespace Forecasting.Controllers
         
         [HttpPost]
         [Route("grouped")]
-        public async Task<IActionResult> GetSalesGrouped([FromBody] SalesGroupedRequestDto request)
+        public async Task<ActionResult<SalesTableDto>> GetSalesGrouped([FromBody] SalesGroupedRequestDto request)
         {
             SalesService salesService = new(_salesRepository, _productsRepository);
-            var result = await salesService.GetSalesGroupedAsync(request.Identificator, request.From, request.To);
+            var result = await salesService.GetSalesByProductInDateRange(request.Identificator, request.From, request.To);
             return Ok(result);
         }
     }
