@@ -21,9 +21,13 @@ builder.Services.AddScoped<CategoryRepository>();
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<GoalRepository>();
 builder.Services.AddScoped<GoalsService>();
+var engineUrl = Environment.GetEnvironmentVariable("ml-engine-url");
 builder.Services.AddHttpClient<PredictionClient>( client =>
 {
-    client.BaseAddress = new Uri("http://127.0.0.1:8000");
+    if(!String.IsNullOrWhiteSpace(engineUrl))
+        client.BaseAddress = new Uri(engineUrl);
+    else
+        client.BaseAddress = new Uri("http://127.0.0.1:8000");
 });
 builder.Services.AddCors(options =>
 {
