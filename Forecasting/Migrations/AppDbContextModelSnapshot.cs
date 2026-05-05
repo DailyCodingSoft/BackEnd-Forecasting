@@ -22,7 +22,73 @@ namespace Forecasting.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Forecasting.Sales.Entity.Product", b =>
+            modelBuilder.Entity("Forecasting.Goals.Entity.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CategoryId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("code");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("categories");
+                });
+
+            modelBuilder.Entity("Forecasting.Goals.Entity.Goal", b =>
+                {
+                    b.Property<int>("GoalId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("goal_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("GoalId"));
+
+                    b.Property<decimal>("Bonus")
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("bonus");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("name");
+
+                    b.Property<decimal>("Progress")
+                        .HasColumnType("numeric(5,2)")
+                        .HasColumnName("progress");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("status");
+
+                    b.HasKey("GoalId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("goals");
+                });
+
+            modelBuilder.Entity("Forecasting.Products.Entity.Product", b =>
                 {
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
@@ -84,9 +150,20 @@ namespace Forecasting.Migrations
                     b.ToTable("sales");
                 });
 
+            modelBuilder.Entity("Forecasting.Goals.Entity.Goal", b =>
+                {
+                    b.HasOne("Forecasting.Goals.Entity.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Forecasting.Sales.Entity.Sale", b =>
                 {
-                    b.HasOne("Forecasting.Sales.Entity.Product", "Product")
+                    b.HasOne("Forecasting.Products.Entity.Product", "Product")
                         .WithMany("Sales")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -95,7 +172,7 @@ namespace Forecasting.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Forecasting.Sales.Entity.Product", b =>
+            modelBuilder.Entity("Forecasting.Products.Entity.Product", b =>
                 {
                     b.Navigation("Sales");
                 });

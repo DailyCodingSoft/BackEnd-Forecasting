@@ -3,6 +3,7 @@ using Forecasting.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Forecasting.Sales;
 using Forecasting.Predictions;
+using Forecasting.Goals.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,10 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connect
 builder.Services.AddScoped<SalesRepository>();
 builder.Services.AddScoped<ProductsRepository>();
 builder.Services.AddScoped<SalesService>();
+builder.Services.AddScoped<CategoryRepository>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<GoalRepository>();
+builder.Services.AddScoped<GoalsService>();
 builder.Services.AddHttpClient<PredictionClient>( client =>
 {
     client.BaseAddress = new Uri("http://127.0.0.1:8000");
