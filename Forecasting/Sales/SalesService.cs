@@ -27,30 +27,36 @@ namespace Forecasting.Sales
             else throw new Exception($"Product with identificator {identificator} was not found.");
         }
 
-        public async Task<ProductSalesResponseDto> GetSalesGroupedAsync(
-            string? identificator,
-            DateTime? from,
-            DateTime? to)
-        {
-            var products = await _salesRepository
-            .GetProductsWithSalesAsync(identificator, from, to);
-            var productDtos = products.Select(p => new ProductSalesDto
-            {
-                ProductId     = p.ProductId,
-                Identificator = p.Identificator,
-                ProductName   = p.ProductName,
-                Sales = p.Sales
-                    .OrderBy(s => s.Week)
-                    .Select(s => new SalePointDto
-                    {
-                        Week     = s.Week,
-                        Date     = s.Date,
-                        Quantity = s.Quantity
-                    })
-                    .ToList()
-            }).ToList();
+        //public async Task<ProductSalesResponseDto> GetSalesGroupedAsync(
+        //    string? identificator,
+        //    DateTime? from,
+        //    DateTime? to)
+        //{
+        //    var products = await _salesRepository
+        //    .GetProductsWithSalesAsync(identificator, from, to);
+        //    var productDtos = products.Select(p => new ProductSalesDto
+        //    {
+        //        ProductId     = p.ProductId,
+        //        Identificator = p.Identificator,
+        //        ProductName   = p.ProductName,
+        //        Sales = p.Sales
+        //            .OrderBy(s => s.Week)
+        //            .Select(s => new SalePointDto
+        //            {
+        //                Week     = s.Week,
+        //                Date     = s.Date,
+        //                Quantity = s.Quantity
+        //            })
+        //            .ToList()
+        //    }).ToList();
 
-            return new ProductSalesResponseDto { Products = productDtos };
+        //    return new ProductSalesResponseDto { Products = productDtos };
+        //}
+
+        public async Task<SalesTableDto> GetSalesByProductInDateRange(string? identificator, DateTime? from, DateTime? to)
+        {
+            List<Sale> dbSales = await _salesRepository.GetSalesByProductInDateRange(identificator, from, to);
+            return SalesMapper.MapSaleListToSalesTableDto(dbSales);
         }
 
         public async Task SaveSaleListAsync(SalesDto sales)
