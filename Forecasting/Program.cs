@@ -16,9 +16,13 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connect
 builder.Services.AddScoped<SalesRepository>();
 builder.Services.AddScoped<ProductsRepository>();
 builder.Services.AddScoped<SalesService>();
+var engineUrl = Environment.GetEnvironmentVariable("ml-engine-url");
 builder.Services.AddHttpClient<PredictionClient>( client =>
 {
-    client.BaseAddress = new Uri("http://127.0.0.1:8000");
+    if(!String.IsNullOrWhiteSpace(engineUrl))
+        client.BaseAddress = new Uri(engineUrl);
+    else
+        client.BaseAddress = new Uri("http://127.0.0.1:8000");
 });
 builder.Services.AddCors(options =>
 {

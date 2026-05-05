@@ -10,6 +10,7 @@ services:
     depends_on:
       - db
     environment:
+      - ml-engine-url=http://ml-engine:8000
       - ASPNETCORE_URLS=http://+:5289
       - ConnectionStrings__Default=Host=db;Port=5432;Database=forecastingprod;Username=admin;Password=${DB_PASSWORD}
 
