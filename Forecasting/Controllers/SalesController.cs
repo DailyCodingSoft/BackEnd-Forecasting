@@ -8,7 +8,7 @@ namespace Forecasting.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalesController(SalesRepository _salesRepository, ProductsRepository _productsRepository) : ControllerBase
+    public class SalesController(SalesRepository _salesRepository, SalesService _salesService) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<SalesTableDto>> GetSales()
@@ -23,9 +23,7 @@ namespace Forecasting.Controllers
         {
             try
             {
-                SalesService salesService = new(_salesRepository, _productsRepository);
-                List<Sale> saleList = salesService.SaveSaleList(sales);
-                _salesRepository.AddRange(saleList);
+                _salesService.SaveSaleList(sales);
                 return Ok("Sale List Saved Correctly!.");
             }
             catch (Exception ex)
@@ -38,8 +36,7 @@ namespace Forecasting.Controllers
         [Route("grouped")]
         public async Task<ActionResult<SalesTableDto>> GetSalesGrouped([FromBody] SalesGroupedRequestDto request)
         {
-            SalesService salesService = new(_salesRepository, _productsRepository);
-            var result = await salesService.GetSalesByProductInDateRange(request.Identificator, request.From, request.To);
+            var result = await _salesService.GetSalesByProductInDateRange(request.Identificator, request.From, request.To);
             return Ok(result);
         }
     }

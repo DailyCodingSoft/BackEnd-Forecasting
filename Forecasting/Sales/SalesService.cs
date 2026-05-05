@@ -8,7 +8,7 @@ namespace Forecasting.Sales
 {
     public class SalesService(SalesRepository _salesRepository, ProductsRepository _productsRepository)
     {
-        public List<Sale> SaveSaleList(SalesDto sales)
+        public void SaveSaleList(SalesDto sales)
         {
             List<Sale> list = [];
             foreach (SaleDto saleDto in sales.Rows)
@@ -16,7 +16,7 @@ namespace Forecasting.Sales
                 Sale saleToSave = SalesMapper.MapSaleDtoToSale(saleDto, GetSaleProduct(saleDto.Identificator));
                 list.Add(saleToSave);
             }
-            return list;
+            _salesRepository.AddRange(list);
         }
 
         private Product GetSaleProduct(string identificator)

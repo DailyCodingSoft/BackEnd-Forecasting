@@ -1,23 +1,24 @@
 ﻿using Forecasting.Goals.DTOs;
 using Forecasting.Goals.Entity;
+using Forecasting.Repositories;
 
 namespace Forecasting.Goals.Services
 {
-    public class CategoryService
+    public class CategoryService(CategoryRepository _categoryRepository)
     {
-        public List<Category> Categories (List<CategoryDto> categories)
+        public void AddCategories(List<CategoryDto> categories)
         {
             List<Category> categoryList = new List<Category>();
             foreach (var categoryDto in categories)
             {
-                Category category = new Category
+                Category category = new()
                 {
                     Code = categoryDto.CategoryCode,
                     Name = categoryDto.CategoryName
                 };
                 categoryList.Add(category);
             }
-            return categoryList;
+            _categoryRepository.AddRange(categoryList);
         }
     }
 }

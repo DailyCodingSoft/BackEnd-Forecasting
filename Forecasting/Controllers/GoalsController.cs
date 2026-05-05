@@ -8,7 +8,8 @@ namespace Forecasting.Controllers
 {
     [Route("/api/[controller]")]
     [ApiController]
-    public class GoalsController(CategoryRepository _categoryRepository, GoalRepository _goalRepository) : ControllerBase
+    public class GoalsController(GoalsService _goalService,
+        CategoryService _categoryService) : ControllerBase
     {
         [HttpPost]
         [Route("addCategoryofGoals")]
@@ -20,9 +21,7 @@ namespace Forecasting.Controllers
                 {
                     return BadRequest("Category is empty.");
                 }
-                CategoryService categoryService = new CategoryService();
-                List<Category> categoryList = categoryService.Categories(category);
-                _categoryRepository.AddRange(categoryList);
+                _categoryService.AddCategories(category);
                 return Ok("Category List Saved Correctly!.");
             }
             catch (Exception ex)
@@ -36,13 +35,11 @@ namespace Forecasting.Controllers
         {
             try
             {
-                if (goals == null || !goals.Any())
+                if (goals == null || goals.Count == 0)
                 {
                     return BadRequest("Goals is empty.");
                 }
-                GoalsService goalsService = new GoalsService(_categoryRepository);
-                List<Goal> goalList = await goalsService.AddGoals(goals);
-                _goalRepository.AddRange(goalList);
+                await _goalService.AddGoals(goals);
                 return Ok("Goals List Saved Correctly!.");
             }
             catch (Exception ex)
