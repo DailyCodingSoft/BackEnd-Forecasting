@@ -2,14 +2,14 @@
 {
     public class GoalDto
     {
-        public string NameGoal { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
-        public decimal ProgressGoal { get; set; }
+        public decimal Progress { get; set; }
 
-        public string CategoryCodeGoal { get; set; } = string.Empty;
+        public string CategoryCode { get; set; } = string.Empty;
 
-        public decimal BonusGoal { get; set; }
+        public decimal Bonus { get; set; }
 
-        public string? StatusGoal { get; set; }
+        public string? Status { get; set; }
     }
 }

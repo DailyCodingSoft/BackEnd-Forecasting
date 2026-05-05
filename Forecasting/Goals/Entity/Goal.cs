@@ -30,6 +30,6 @@ namespace Forecasting.Goals.Entity
         public decimal Bonus { get; set; }
 
         // Navigation
-        public Category Category { get; set; }
+        public required Category Category { get; set; }
     }
 }

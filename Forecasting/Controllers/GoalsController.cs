@@ -32,8 +32,7 @@ namespace Forecasting.Controllers
         }
 
         [HttpPost]
-        [Route("addGoals")]
-        public async Task<IActionResult> AddGoals([FromBody] List<GoalDto> goals)
+        public async Task<IActionResult> Goals([FromBody] List<GoalDto> goals)
         {
             try
             {
@@ -42,7 +41,7 @@ namespace Forecasting.Controllers
                     return BadRequest("Goals is empty.");
                 }
                 GoalsService goalsService = new GoalsService(_categoryRepository);
-                List<Goal> goalList = await goalsService.Goals(goals);
+                List<Goal> goalList = await goalsService.AddGoals(goals);
                 _goalRepository.AddRange(goalList);
                 return Ok("Goals List Saved Correctly!.");
             }

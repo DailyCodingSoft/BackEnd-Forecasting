@@ -6,12 +6,12 @@ namespace Forecasting.Goals.Services
 {
     public class GoalsService(CategoryRepository _categoryRepository)
     {
-        public async Task<List<Goal>> Goals(List<GoalDto> goalDtos)
+        public async Task<List<Goal>> AddGoals(List<GoalDto> goalDtos)
         {
             var goalList = new List<Goal>();
 
             var categoryCodes = goalDtos
-                    .Select(g => g.CategoryCodeGoal)
+                    .Select(g => g.CategoryCode)
                     .Where(code => !string.IsNullOrEmpty(code))
                     .Distinct()
                     .ToList();
@@ -20,16 +20,17 @@ namespace Forecasting.Goals.Services
 
             foreach (var goalDto in goalDtos)
             {
-                if (!categories.TryGetValue(goalDto.CategoryCodeGoal, out var category))
-                    throw new Exception($"Invalid category code: {goalDto.CategoryCodeGoal}");
+                if (!categories.TryGetValue(goalDto.CategoryCode, out var category))
+                    throw new Exception($"Invalid category code: {goalDto.CategoryCode}");
 
                 var goal = new Goal
                 {
-                    Name = goalDto.NameGoal,
-                    Progress = goalDto.ProgressGoal,
-                    CategoryId = category.CategoryId,
-                    Bonus = goalDto.BonusGoal,
-                    Status = goalDto.StatusGoal ?? "Active"
+                    Name = goalDto.Name,
+                    Progress = goalDto.Progress,
+                    CategoryId = category.CategoryId, // FK
+                    Category = category,
+                    Bonus = goalDto.Bonus,
+                    Status = goalDto.Status ?? "Active"
                 };
 
                 goalList.Add(goal);
