@@ -4,7 +4,7 @@ using Forecasting.Repositories;
 
 namespace Forecasting.Goals.Services
 {
-    public class GoalsService(CategoryRepository _categoryRepository)
+    public class GoalsService(CategoryRepository _categoryRepository, GoalRepository _goalRepository)
     {
         public async Task<List<Goal>> AddGoals(List<GoalDto> goalDtos)
         {
@@ -35,6 +35,7 @@ namespace Forecasting.Goals.Services
 
                 goalList.Add(goal);
             }
+            _goalRepository.AddRange(goalList);
             return goalList;
         }
     }
