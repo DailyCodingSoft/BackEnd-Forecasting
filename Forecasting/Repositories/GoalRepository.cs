@@ -11,5 +11,10 @@ namespace Forecasting.Repositories
             _context.Goals.AddRange(goals);
             _context.SaveChanges();
         }
+
+        public async Task<List<Goal>> GetGoalsByStatusAsync(string status)
+        {
+            return await _context.Goals.Where(g => g.Status == status).Include(g => g.Category).ToListAsync();
+        }
     }
 }

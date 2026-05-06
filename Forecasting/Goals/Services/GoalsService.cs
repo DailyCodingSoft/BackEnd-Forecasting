@@ -1,11 +1,16 @@
 ﻿using Forecasting.Goals.DTOs;
 using Forecasting.Goals.Entity;
 using Forecasting.Repositories;
+using System.Net.NetworkInformation;
 
 namespace Forecasting.Goals.Services
 {
     public class GoalsService(CategoryRepository _categoryRepository, GoalRepository _goalRepository)
     {
+        public async Task<List<Goal>> GetGoalsByStatus(string status)
+        {
+            return await _goalRepository.GetGoalsByStatusAsync(status);
+        }
         public async Task<List<Goal>> AddGoals(List<GoalDto> goalDtos)
         {
             var goalList = new List<Goal>();

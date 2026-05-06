@@ -1,7 +1,7 @@
 ﻿using Forecasting.Goals.DTOs;
 using Forecasting.Goals.Entity;
 using Forecasting.Goals.Services;
-using Forecasting.Repositories;
+using Forecasting.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Forecasting.Controllers
@@ -11,6 +11,19 @@ namespace Forecasting.Controllers
     public class GoalsController(GoalsService _goalService,
         CategoryService _categoryService) : ControllerBase
     {
+        [HttpGet("{status}")]
+        public async Task<IActionResult> GetGoalsByStatus(string status) {
+            try
+            {
+                List<Goal> goals = await _goalService.GetGoalsByStatus(status);
+                List<GoalResponseDto> goalsResponse = GoalsMapper.MapGoalListToGoalResponseDtoList(goals);
+                return Ok(goalsResponse);
+            }
+            catch (Exception ex) { 
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         [Route("addCategoryofGoals")]
         public async Task<IActionResult> AddCategoryofGoals([FromBody] List<CategoryDto> category)
