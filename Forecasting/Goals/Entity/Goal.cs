@@ -19,17 +19,17 @@ namespace Forecasting.Goals.Entity
         [Column("progress", TypeName = "numeric(5,2)")]
         public decimal Progress { get; set; }
 
+        [Column("goal_status_id")]
+        public int GoalStatusId { get; set; }
+
         [Column("category_id")]
         public int CategoryId { get; set; }
-
-        [Column("status")]
-        [MaxLength(50)]
-        public string Status { get; set; } = "Active";
 
         [Column("bonus", TypeName = "numeric(10,2)")]
         public decimal Bonus { get; set; }
 
         // Navigation
         public required Category Category { get; set; }
+        public required GoalStatus GoalStatus { get; set; }
     }
 }
