@@ -65,6 +65,10 @@ namespace Forecasting.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("category_id");
 
+                    b.Property<int>("GoalStatusId")
+                        .HasColumnType("integer")
+                        .HasColumnName("goal_status_id");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -75,17 +79,39 @@ namespace Forecasting.Migrations
                         .HasColumnType("numeric(5,2)")
                         .HasColumnName("progress");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("status");
-
                     b.HasKey("GoalId");
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("GoalStatusId");
+
                     b.ToTable("goals");
+                });
+
+            modelBuilder.Entity("Forecasting.Goals.Entity.GoalStatus", b =>
+                {
+                    b.Property<int>("StatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("goal_status_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("StatusId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("code");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.HasKey("StatusId");
+
+                    b.ToTable("goal_status");
                 });
 
             modelBuilder.Entity("Forecasting.Products.Entity.Product", b =>
@@ -158,7 +184,15 @@ namespace Forecasting.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Forecasting.Goals.Entity.GoalStatus", "GoalStatus")
+                        .WithMany()
+                        .HasForeignKey("GoalStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("GoalStatus");
                 });
 
             modelBuilder.Entity("Forecasting.Sales.Entity.Sale", b =>

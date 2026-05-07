@@ -11,6 +11,13 @@ namespace Forecasting.Controllers
     public class GoalsController(GoalsService _goalService,
         CategoryService _categoryService) : ControllerBase
     {
+        [HttpGet("status")]
+        public async Task<IActionResult> GetGoalStatus()
+        {
+            List<GoalStatusDto> status = await _goalService.GetGoalStatus();
+            return Ok(status);
+        }
+
         [HttpGet("{status}")]
         public async Task<IActionResult> GetGoalsByStatus(string status) {
             try
@@ -44,7 +51,7 @@ namespace Forecasting.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Goals([FromBody] List<GoalDto> goals)
+        public async Task<IActionResult> Goals([FromBody] List<GoalRequestDto> goals)
         {
             try
             {

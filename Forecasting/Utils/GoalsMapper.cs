@@ -17,7 +17,7 @@ namespace Forecasting.Utils
                 Name = goal.Name,
                 Category = goal.Category.Name,
                 Progress = goal.Progress,
-                Status = goal.Status,
+                Status = goal.GoalStatus.Name,
                 Bonus = goal.Bonus
             };
     }

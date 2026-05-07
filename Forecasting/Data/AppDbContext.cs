@@ -11,6 +11,7 @@ namespace Forecasting.Data
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Goal> Goals { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<GoalStatus> GoalStatus { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
     }
