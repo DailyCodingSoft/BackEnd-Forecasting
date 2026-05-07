@@ -60,5 +60,58 @@ namespace Forecasting.Goals.Services
             _goalRepository.AddRange(goalList);
             return goalList;
         }
+        
+        public async Task<string> UpdateGoal(UpdateGoalRequest request)
+        {
+            var goal = await _goalRepository.GetGoalByName(request.Name);
+
+            if (goal == null)
+                throw new Exception("Meta no encontrada");
+
+            bool changed = false;
+
+            if (!string.IsNullOrWhiteSpace(request.NewName) &&
+                request.NewName != goal.Name)
+            {
+                goal.Name = request.NewName;
+                changed = true;
+            }
+
+            if (request.Progress.HasValue &&
+                request.Progress.Value != goal.Progress)
+            {
+                goal.Progress = request.Progress.Value;
+                changed = true;
+            }
+
+            if (request.CategoryId.HasValue &&
+                request.CategoryId.Value != goal.CategoryId)
+            {
+                goal.CategoryId = request.CategoryId.Value;
+                changed = true;
+            }
+
+            if (request.Bonus.HasValue &&
+                request.Bonus.Value != goal.Bonus)
+            {
+                goal.Bonus = request.Bonus.Value;
+                changed = true;
+            }
+
+            if (request.GoalStatusId.HasValue &&
+                request.GoalStatusId.Value != goal.GoalStatusId)
+            {
+                goal.GoalStatusId = request.GoalStatusId.Value;
+                changed = true;
+            }
+
+            if (!changed)
+                throw new Exception("No hubo cambios");
+
+            await _goalRepository.SaveChangesAsync();
+
+            return "Meta actualizada correctamente";
+        }
+
     }
 }
