@@ -13,12 +13,21 @@ namespace Forecasting.Goals.Services
             {
                 Category category = new()
                 {
-                    Code = categoryDto.CategoryCode,
-                    Name = categoryDto.CategoryName
+                    Code = categoryDto.Code,
+                    Name = categoryDto.Name
                 };
                 categoryList.Add(category);
             }
             _categoryRepository.AddRange(categoryList);
+        }
+
+        public async Task<List<CategoryDto>> GetCategories()
+        {
+            var categories = await _categoryRepository.GetCategoriesAsync();
+            return [.. categories.Select(c => new CategoryDto {
+                Code = c.Code,
+                Name = c.Name
+            })];
         }
     }
 }

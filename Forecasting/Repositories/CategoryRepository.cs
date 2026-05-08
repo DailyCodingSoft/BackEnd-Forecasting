@@ -18,5 +18,10 @@ namespace Forecasting.Repositories
                 .Where(c => codes.Contains(c.Code))
                 .ToDictionaryAsync(c => c.Code);
         }
+
+        public async Task<List<Category>> GetCategoriesAsync()
+        {
+            return await _context.Categories.ToListAsync();
+        }
     }
 }

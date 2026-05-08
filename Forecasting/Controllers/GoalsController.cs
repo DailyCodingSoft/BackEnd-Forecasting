@@ -11,6 +11,13 @@ namespace Forecasting.Controllers
     public class GoalsController(GoalsService _goalService,
         CategoryService _categoryService) : ControllerBase
     {
+        [HttpGet("categories")]
+        public async Task<IActionResult> GetGoalCategories()
+        {
+            List<CategoryDto> categories = await _categoryService.GetCategories();
+            return Ok(categories);
+        }
+
         [HttpGet("status")]
         public async Task<IActionResult> GetGoalStatus()
         {
