@@ -13,8 +13,8 @@ namespace Forecasting.Goals.Services
             {
                 Category category = new()
                 {
-                    Code = categoryDto.CategoryCode,
-                    Name = categoryDto.CategoryName
+                    Code = categoryDto.Code,
+                    Name = categoryDto.Name
                 };
                 categoryList.Add(category);
             }
@@ -25,8 +25,8 @@ namespace Forecasting.Goals.Services
         {
             var categories = await _categoryRepository.GetCategoriesAsync();
             return [.. categories.Select(c => new CategoryDto {
-                CategoryCode = c.Code,
-                CategoryName = c.Name
+                Code = c.Code,
+                Name = c.Name
             })];
         }
     }
