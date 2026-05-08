@@ -11,5 +11,7 @@
         public decimal Bonus { get; set; }
 
         public required string Status { get; set; }
+
+        public required int Quantity { get; set; }
     }
 }

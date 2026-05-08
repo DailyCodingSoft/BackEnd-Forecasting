@@ -49,6 +49,7 @@ namespace Forecasting.Goals.Services
                         Bonus = goalDto.Bonus,
                         GoalStatusId = goalStatus.StatusId,
                         GoalStatus = goalStatus,
+                        Quantity = goalDto.Quantity,
                     };
 
                     goalList.Add(goal);
