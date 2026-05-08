@@ -28,6 +28,9 @@ namespace Forecasting.Goals.Entity
         [Column("bonus", TypeName = "numeric(10,2)")]
         public decimal Bonus { get; set; }
 
+        [Column("quantity")]
+        public int Quantity { get; set; }
+
         // Navigation
         public required Category Category { get; set; }
         public required GoalStatus GoalStatus { get; set; }
