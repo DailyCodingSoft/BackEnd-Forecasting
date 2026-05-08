@@ -20,5 +20,14 @@ namespace Forecasting.Goals.Services
             }
             _categoryRepository.AddRange(categoryList);
         }
+
+        public async Task<List<CategoryDto>> GetCategories()
+        {
+            var categories = await _categoryRepository.GetCategoriesAsync();
+            return [.. categories.Select(c => new CategoryDto {
+                CategoryCode = c.Code,
+                CategoryName = c.Name
+            })];
+        }
     }
 }
