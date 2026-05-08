@@ -79,6 +79,10 @@ namespace Forecasting.Migrations
                         .HasColumnType("numeric(5,2)")
                         .HasColumnName("progress");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
                     b.HasKey("GoalId");
 
                     b.HasIndex("CategoryId");
