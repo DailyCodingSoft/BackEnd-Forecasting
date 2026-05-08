@@ -21,5 +21,15 @@ namespace Forecasting.Repositories
         {
             return await _context.GoalStatus.ToListAsync();
         }
+
+        public async Task<Goal?> GetGoalByName(string name)
+        {
+            return await _context.Goals.FirstOrDefaultAsync(g => g.Name == name);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -67,5 +67,19 @@ namespace Forecasting.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateGoal([FromBody] UpdateGoalRequest request)
+        {
+            try
+            {
+                var message = await _goalService.UpdateGoal(request);
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
