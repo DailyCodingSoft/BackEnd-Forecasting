@@ -78,6 +78,8 @@ namespace Forecasting.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> UpdateGoal([FromBody] UpdateGoalRequest request)
         {
+            if (request == null)
+                throw new Exception("Request is empty");
             try
             {
                 var message = await _goalService.UpdateGoal(request);
