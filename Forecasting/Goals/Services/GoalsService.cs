@@ -20,6 +20,11 @@ namespace Forecasting.Goals.Services
         {
             return await _goalRepository.GetGoalsByStatusAsync(status);
         }
+
+        public async Task<Goal?> GetGoalByName(string name)
+        {
+            return await _goalRepository.GetGoalByName(name);
+        }
         public async Task<List<Goal>> AddGoals(List<GoalRequestDto> goalDtos)
         {
             var goalList = new List<Goal>();
