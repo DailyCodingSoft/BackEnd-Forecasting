@@ -8,10 +8,12 @@ namespace Forecasting.Goals.DTOs
 
         public decimal? Progress { get; set; }
 
-        public int? CategoryId { get; set; }
+        public string? CategoryCode { get; set; }
+
+        public int? Quantity { get; set; }
 
         public decimal? Bonus { get; set; }
 
-        public int? GoalStatusId { get; set; }
+        public string? StatusCode { get; set; }
     }
 }

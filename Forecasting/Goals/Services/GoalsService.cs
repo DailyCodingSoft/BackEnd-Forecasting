@@ -1,15 +1,15 @@
-﻿using Forecasting.Goals.DTOs;
+using Forecasting.Goals.DTOs;
 using Forecasting.Goals.Entity;
 using Forecasting.Repositories;
 using System.Net.NetworkInformation;
 
 namespace Forecasting.Goals.Services
 {
-    public class GoalsService(CategoryRepository _categoryRepository, GoalRepository _goalRepository)
+    public class GoalsService(CategoryRepository _categoryRepository, GoalRepository _goalRepository, GoalStatusRepository _goalStatusRepository)
     {
         public async Task<List<GoalStatusDto>> GetGoalStatus()
         {
-            var status = await _goalRepository.GetGoalStatus();
+            var status = await _goalStatusRepository.GetGoalStatusAsync();
             return [.. status.Select(s => new GoalStatusDto
             {
                 Code = s.Code,
@@ -19,6 +19,11 @@ namespace Forecasting.Goals.Services
         public async Task<List<Goal>> GetGoalsByStatus(string status)
         {
             return await _goalRepository.GetGoalsByStatusAsync(status);
+        }
+
+        public async Task<Goal?> GetGoalByName(string name)
+        {
+            return await _goalRepository.GetGoalByName(name);
         }
         public async Task<List<Goal>> AddGoals(List<GoalRequestDto> goalDtos)
         {
@@ -31,7 +36,7 @@ namespace Forecasting.Goals.Services
                     .ToList();
 
             var categories = await _categoryRepository.GetCategoriesByCodes(categoryCodes);
-            var status = await _goalRepository.GetGoalStatus();
+            var status = await _goalStatusRepository.GetGoalStatusAsync();
 
             foreach (var goalDto in goalDtos)
             {
@@ -85,10 +90,13 @@ namespace Forecasting.Goals.Services
                 changed = true;
             }
 
-            if (request.CategoryId.HasValue &&
-                request.CategoryId.Value != goal.CategoryId)
+            if (request.CategoryCode != null &&
+                request.CategoryCode != goal.CategoryId.ToString())
             {
-                goal.CategoryId = request.CategoryId.Value;
+                var category = await _categoryRepository.GetCategoryByCode(request.CategoryCode);
+                if (category == null)
+                    throw new Exception($"Invalid category code: {request.CategoryCode}");
+                goal.CategoryId = int.Parse(category.Code);
                 changed = true;
             }
 
@@ -99,10 +107,20 @@ namespace Forecasting.Goals.Services
                 changed = true;
             }
 
-            if (request.GoalStatusId.HasValue &&
-                request.GoalStatusId.Value != goal.GoalStatusId)
+            if (request.StatusCode != null &&
+                request.StatusCode != goal.GoalStatusId.ToString())
             {
-                goal.GoalStatusId = request.GoalStatusId.Value;
+                var goalStatus = await _goalStatusRepository.GetGoalStatusByCodeAsync(request.StatusCode);
+                if (goalStatus == null)
+                    throw new Exception($"Invalid status code: {request.StatusCode}");
+                goal.GoalStatusId = int.Parse(goalStatus.Code);
+                changed = true;
+            }
+
+            if(request.Quantity.HasValue &&
+                request.Quantity.Value != goal.Quantity)
+            {
+                goal.Quantity = request.Quantity.Value;
                 changed = true;
             }
 

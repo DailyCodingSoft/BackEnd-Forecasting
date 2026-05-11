@@ -1,4 +1,4 @@
-﻿using Forecasting.Data;
+using Forecasting.Data;
 using Forecasting.Goals.Entity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,14 +17,14 @@ namespace Forecasting.Repositories
             return await _context.Goals.Include(g => g.Category).Include(g => g.GoalStatus).Where(g => g.GoalStatus.Name == status.ToLower()).ToListAsync();
         }
 
-        public async Task<List<GoalStatus>> GetGoalStatus()
-        {
-            return await _context.GoalStatus.ToListAsync();
-        }
+
 
         public async Task<Goal?> GetGoalByName(string name)
         {
-            return await _context.Goals.FirstOrDefaultAsync(g => g.Name == name);
+            return await _context.Goals
+                .Include(g => g.Category)
+                .Include(g => g.GoalStatus)
+                .FirstOrDefaultAsync(g => g.Name == name);
         }
 
         public async Task SaveChangesAsync()

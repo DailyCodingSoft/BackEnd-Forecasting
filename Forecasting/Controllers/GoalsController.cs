@@ -1,4 +1,4 @@
-﻿using Forecasting.Goals.DTOs;
+using Forecasting.Goals.DTOs;
 using Forecasting.Goals.Entity;
 using Forecasting.Goals.Services;
 using Forecasting.Utils;
@@ -34,6 +34,26 @@ namespace Forecasting.Controllers
                 return Ok(goalsResponse);
             }
             catch (Exception ex) { 
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("byName/{name}")]
+        public async Task<IActionResult> GetGoalByName(string name)
+        {
+            try
+            {
+                Goal? goal = await _goalService.GetGoalByName(name);
+                if (goal == null)
+                {
+                    return NotFound($"Goal with name '{name}' not found.");
+                }
+
+                GoalResponseDto goalResponse = GoalsMapper.MapGoalToGoalResponseDto(goal);
+                return Ok(goalResponse);
+            }
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }
@@ -78,6 +98,8 @@ namespace Forecasting.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> UpdateGoal([FromBody] UpdateGoalRequest request)
         {
+            if (request == null)
+                throw new Exception("Request is empty");
             try
             {
                 var message = await _goalService.UpdateGoal(request);
