@@ -1,4 +1,5 @@
-﻿using Forecasting.Sales.Entity;
+﻿using Forecasting.Goals.Entity;
+using Forecasting.Sales.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,6 +24,11 @@ namespace Forecasting.Products.Entity
 
         [Column("price", TypeName = "numeric(10,2)")]
         public decimal ProductPrice { get; set; }
+
+        [Column("category_id")]
+        public int CategoryId { get; set; }
+
         public required List<Sale> Sales { get; set; }
+        public required Category Category { get; set; }
     }
 }

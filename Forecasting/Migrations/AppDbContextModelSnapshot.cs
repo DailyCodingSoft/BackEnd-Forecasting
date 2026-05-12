@@ -127,6 +127,10 @@ namespace Forecasting.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProductId"));
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
                     b.Property<string>("Identificator")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -144,6 +148,8 @@ namespace Forecasting.Migrations
                         .HasColumnName("price");
 
                     b.HasKey("ProductId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("products");
                 });
@@ -197,6 +203,17 @@ namespace Forecasting.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("GoalStatus");
+                });
+
+            modelBuilder.Entity("Forecasting.Products.Entity.Product", b =>
+                {
+                    b.HasOne("Forecasting.Goals.Entity.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Forecasting.Sales.Entity.Sale", b =>
