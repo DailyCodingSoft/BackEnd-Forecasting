@@ -28,5 +28,10 @@ namespace Forecasting.Repositories
         {
             return await _context.Categories.FirstOrDefaultAsync(c => c.Code == code);
         }
+
+        public async Task<Category?> GetCategoryByNameAsync(string name)
+        {
+            return await _context.Categories.FirstOrDefaultAsync(c => c.Name == name);
+        }
     }
 }

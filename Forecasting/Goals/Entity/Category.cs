@@ -20,5 +20,12 @@ namespace Forecasting.Goals.Entity
         [Column("name")]
         [MaxLength(100)]
         public string Name { get; set; } = string.Empty;
+        
+        public override string ToString()
+        {
+            return $"CategoryId: {CategoryId}, " +
+                $"Code: {Code}, " +
+                $"Name: {Name}";
+        }
     }
 }
