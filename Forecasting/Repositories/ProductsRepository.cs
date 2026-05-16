@@ -1,4 +1,5 @@
 using Forecasting.Data;
+using Forecasting.Goals.Entity;
 using Forecasting.Products.Entity;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,9 +15,16 @@ namespace Forecasting.Repositories
         {
             return await _context.Products.FirstOrDefaultAsync(p => p.Identificator.Equals(identificator));
         }
-        public async Task<List<Product>> GetProductsAsync()
+        public async Task<List<Product>> GetProductsAsync(int? categoryId = null)
         {
-            return await _context.Products.ToListAsync();
+            IQueryable<Product> query = _context.Products;
+
+            if (categoryId.HasValue)
+            {
+                query = query.Where(p => p.CategoryId == categoryId.Value);
+            }
+
+            return await query.ToListAsync();
         }
         public async Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId)
         {
