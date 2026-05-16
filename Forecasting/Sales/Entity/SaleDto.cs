@@ -14,5 +14,9 @@ namespace Forecasting.Sales.Entity
         public int Week { get; set; }
 
         public DateTime Date { get; set; }
+
+        public string? CategoryCode { get; set; }
+
+        public decimal? Price { get; set; }
     }
 }

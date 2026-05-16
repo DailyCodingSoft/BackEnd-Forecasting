@@ -26,5 +26,11 @@ namespace Forecasting.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task AddAsync(Product product)
+        {
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
+        }
     }
 }
