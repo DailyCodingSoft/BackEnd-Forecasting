@@ -29,5 +29,16 @@ namespace Forecasting.Goals.Services
                 Name = c.Name
             })];
         }
+
+        public async Task<int> GetCategoryIdByName(string name)
+        {
+            var category = await _categoryRepository
+                .GetCategoryByNameAsync(name);
+
+            if (category is null)
+                throw new Exception("Category not found.");
+
+            return category.CategoryId;
+        }
     }
 }

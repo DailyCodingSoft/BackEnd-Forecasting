@@ -30,5 +30,11 @@ namespace Forecasting.Products.Entity
 
         public required List<Sale> Sales { get; set; }
         public required Category Category { get; set; }
+        public List<SuggestedDiscount> SuggestedDiscounts { get; set; } = [];
+
+        public override string ToString()
+        {
+            return $"ProductId: {ProductId}, Identificator: {Identificator}, ProductName: {ProductName}, ProductPrice: {ProductPrice}, CategoryId: {CategoryId}";
+        }
     }
 }

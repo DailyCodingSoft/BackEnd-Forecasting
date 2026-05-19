@@ -27,6 +27,11 @@ namespace Forecasting.Repositories
             return await query.ToListAsync();
         }
 
+        public async Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId)
+        {
+            return await _context.Products.Where(p => p.CategoryId == categoryId).ToListAsync();
+        }
+
         public async Task AddAsync(Product product)
         {
             await _context.Products.AddAsync(product);

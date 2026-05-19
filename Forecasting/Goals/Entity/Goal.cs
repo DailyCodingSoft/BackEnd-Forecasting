@@ -34,5 +34,6 @@ namespace Forecasting.Goals.Entity
         // Navigation
         public required Category Category { get; set; }
         public required GoalStatus GoalStatus { get; set; }
+        public List<SuggestedDiscount> SuggestedDiscounts { get; set; } = [];
     }
 }

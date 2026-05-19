@@ -118,6 +118,40 @@ namespace Forecasting.Migrations
                     b.ToTable("goal_status");
                 });
 
+            modelBuilder.Entity("Forecasting.Goals.Entity.SuggestedDiscount", b =>
+                {
+                    b.Property<int>("SuggestedDiscountId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("suggested_discount_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SuggestedDiscountId"));
+
+                    b.Property<int>("GoalId")
+                        .HasColumnType("integer")
+                        .HasColumnName("goal_id");
+
+                    b.Property<decimal>("MaximumPrice")
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("maximum_price");
+
+                    b.Property<decimal>("MinimumPrice")
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("minimum_price");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer")
+                        .HasColumnName("product_id");
+
+                    b.HasKey("SuggestedDiscountId");
+
+                    b.HasIndex("GoalId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("suggested_discount");
+                });
+
             modelBuilder.Entity("Forecasting.Products.Entity.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -205,6 +239,25 @@ namespace Forecasting.Migrations
                     b.Navigation("GoalStatus");
                 });
 
+            modelBuilder.Entity("Forecasting.Goals.Entity.SuggestedDiscount", b =>
+                {
+                    b.HasOne("Forecasting.Goals.Entity.Goal", "Goal")
+                        .WithMany("SuggestedDiscounts")
+                        .HasForeignKey("GoalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Forecasting.Products.Entity.Product", "Product")
+                        .WithMany("SuggestedDiscounts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Goal");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Forecasting.Products.Entity.Product", b =>
                 {
                     b.HasOne("Forecasting.Goals.Entity.Category", "Category")
@@ -227,9 +280,16 @@ namespace Forecasting.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Forecasting.Goals.Entity.Goal", b =>
+                {
+                    b.Navigation("SuggestedDiscounts");
+                });
+
             modelBuilder.Entity("Forecasting.Products.Entity.Product", b =>
                 {
                     b.Navigation("Sales");
+
+                    b.Navigation("SuggestedDiscounts");
                 });
 #pragma warning restore 612, 618
         }

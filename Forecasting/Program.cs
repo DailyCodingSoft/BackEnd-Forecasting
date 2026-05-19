@@ -22,6 +22,8 @@ builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<GoalRepository>();
 builder.Services.AddScoped<GoalStatusRepository>();
 builder.Services.AddScoped<GoalsService>();
+builder.Services.AddScoped<SuggestedDiscountRepository>();
+builder.Services.AddScoped<SuggestedDiscountService>();
 var engineUrl = Environment.GetEnvironmentVariable("ml-engine-url");
 builder.Services.AddHttpClient<PredictionClient>( client =>
 {

@@ -9,7 +9,8 @@ namespace Forecasting.Controllers
     [Route("/api/[controller]")]
     [ApiController]
     public class GoalsController(GoalsService _goalService,
-        CategoryService _categoryService) : ControllerBase
+        CategoryService _categoryService,
+        SuggestedDiscountService _suggestedDiscountService) : ControllerBase
     {
         [HttpGet("categories")]
         public async Task<IActionResult> GetGoalCategories()
@@ -104,6 +105,39 @@ namespace Forecasting.Controllers
             {
                 var message = await _goalService.UpdateGoal(request);
                 return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("generate-suggested-discounts")]
+        public async Task<IActionResult> GenerateSuggestedDiscounts(
+            [FromBody] string goalName)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(goalName))
+                    return BadRequest("Request is empty.");
+
+                await _suggestedDiscountService.GenerateByGoalName(goalName);
+                return Ok("Discount added successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("suggested-discounts/{goalName}")]
+        public async Task<IActionResult> GetSuggestedDiscountsByGoalName(string goalName)
+        {
+            try
+            {
+                var discounts = await _suggestedDiscountService.GetByGoalName(goalName);
+                return Ok(discounts);
             }
             catch (Exception ex)
             {
