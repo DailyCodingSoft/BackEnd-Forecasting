@@ -19,12 +19,24 @@ namespace Forecasting.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostSales(SalesDto sales)
+        public async Task<ActionResult> PostSales(SalesDto sales, [FromQuery] bool upsertProducts = false)
         {
             try
             {
-                _salesService.SaveSaleList(sales);
+                if (upsertProducts)
+                    await _salesService.SaveSaleListWithProductsAsync(sales);
+                else
+                    _salesService.SaveSaleList(sales);
+
                 return Ok("Sale List Saved Correctly!.");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

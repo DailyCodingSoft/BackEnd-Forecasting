@@ -26,16 +26,16 @@ namespace Forecasting.Repositories
 
             return await query.ToListAsync();
         }
+
         public async Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId)
         {
             return await _context.Products.Where(p => p.CategoryId == categoryId).ToListAsync();
         }
-        public async Task<List<int>> GetExistingIds(List<int> productIds)
+
+        public async Task AddAsync(Product product)
         {
-            return await _context.Products
-                .Where(p => productIds.Contains(p.ProductId))
-                .Select(p => p.ProductId)
-                .ToListAsync();
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
         }
     }
 }
