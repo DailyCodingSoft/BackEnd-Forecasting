@@ -1,3 +1,4 @@
+using Forecasting.Goals.Entity;
 using Forecasting.Products.Entity;
 using Forecasting.Repositories;
 using Forecasting.Sales.Entity;
@@ -6,7 +7,10 @@ using Forecasting.Utils;
 
 namespace Forecasting.Sales
 {
-    public class SalesService(SalesRepository _salesRepository, ProductsRepository _productsRepository)
+    public class SalesService(
+        SalesRepository _salesRepository,
+        ProductsRepository _productsRepository,
+        CategoryRepository _categoryRepository)
     {
         public void SaveSaleList(SalesDto sales)
         {
@@ -74,6 +78,63 @@ namespace Forecasting.Sales
             }
 
             await _salesRepository.AddRangeAsync(list);
+        }
+
+        public async Task SaveSaleListWithProductsAsync(SalesDto sales)
+        {
+            var invalidRows = sales.Rows
+                .Where(r => string.IsNullOrWhiteSpace(r.CategoryCode) || !r.Price.HasValue)
+                .Select(r => r.Identificator)
+                .ToList();
+
+            if (invalidRows.Count > 0)
+            {
+                throw new ArgumentException(
+                    $"Missing CategoryCode or Price for sale rows with identificators: {string.Join(", ", invalidRows)}");
+            }
+
+            var requestedCodes = sales.Rows
+                .Select(r => r.CategoryCode!)
+                .Distinct()
+                .ToList();
+
+            Dictionary<string, Category> categories = await _categoryRepository.GetCategoriesByCodes(requestedCodes);
+
+            var unknownCodes = requestedCodes
+                .Where(code => !categories.ContainsKey(code))
+                .ToList();
+
+            if (unknownCodes.Count > 0)
+            {
+                throw new KeyNotFoundException(
+                    $"Unknown category codes: {string.Join(", ", unknownCodes)}");
+            }
+
+            var salesToInsert = new List<Sale>();
+
+            foreach (var row in sales.Rows)
+            {
+                Product? product = await _productsRepository.GetProductByIdentificatorAsync(row.Identificator);
+
+                if (product is null)
+                {
+                    Category category = categories[row.CategoryCode!];
+                    product = new Product
+                    {
+                        Identificator = row.Identificator,
+                        ProductName = row.ProductName,
+                        ProductPrice = row.Price!.Value,
+                        CategoryId = category.CategoryId,
+                        Category = category,
+                        Sales = []
+                    };
+                    await _productsRepository.AddAsync(product);
+                }
+
+                salesToInsert.Add(SalesMapper.MapSaleDtoToSale(row, product));
+            }
+
+            await _salesRepository.AddRangeAsync(salesToInsert);
         }
     }
 }
