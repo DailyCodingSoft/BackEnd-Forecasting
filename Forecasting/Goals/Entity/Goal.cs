@@ -35,16 +35,5 @@ namespace Forecasting.Goals.Entity
         public required Category Category { get; set; }
         public required GoalStatus GoalStatus { get; set; }
         public List<SuggestedDiscount> SuggestedDiscounts { get; set; } = [];
-
-        public override string ToString()
-        {
-            return $"GoalId: {GoalId}, " +
-                $"Name: {Name}, " +
-                $"Progress: {Progress}, " +
-                $"GoalStatusId: {GoalStatusId}, " +
-                $"CategoryId: {CategoryId}, " +
-                $"Bonus: {Bonus}, " +
-                $"Quantity: {Quantity}";
-        }
     }
 }

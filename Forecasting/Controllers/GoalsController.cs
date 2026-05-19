@@ -119,7 +119,6 @@ namespace Forecasting.Controllers
         {
             try
             {
-                Console.WriteLine($"Goal Name: {goalName}");
                 if (string.IsNullOrEmpty(goalName))
                     return BadRequest("Request is empty.");
 
