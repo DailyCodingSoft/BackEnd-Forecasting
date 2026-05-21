@@ -4,13 +4,29 @@ namespace Forecasting.Predictions
 {
     public class PredictionClient(HttpClient _httpClient)
     {
-        public async Task<ForecastResponse> GetPrediction(string productIdentifier)
+        public async Task<ForecastResponse?> GetPrediction(
+            string productIdentifier
+        )
         {
-            var response = await _httpClient.GetFromJsonAsync<ForecastResponse>($"/forecast/{productIdentifier}");
-            if (response != null)
+            try
+            {
+                var response = await _httpClient
+                    .GetFromJsonAsync<ForecastResponse>(
+                        $"/forecast/{productIdentifier}"
+                    );
+
                 return response;
-            else
-                throw new Exception("Error getting prediction");
+            }
+            catch (HttpRequestException ex)
+            {
+                // Capturar errores 400 del ML Engine
+                if (ex.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    return null;
+                }
+
+                throw;
+            }
         }
     }
 }
