@@ -86,7 +86,7 @@ namespace Forecasting.Goals.Services
             return [.. discounts.Select(x => new SuggestedDiscountDto
             {
                 SuggestedDiscountId = x.SuggestedDiscountId,
-                ProductId = x.ProductId,
+                Identificator = x.Product?.Identificator ?? "Unknown",
                 GoalId = x.GoalId,
                 ProductName = x.Product?.ProductName ?? "Unknown",
                 MinimumPrice = x.MinimumPrice,
