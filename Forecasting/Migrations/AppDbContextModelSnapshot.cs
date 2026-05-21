@@ -152,6 +152,38 @@ namespace Forecasting.Migrations
                     b.ToTable("suggested_discount");
                 });
 
+            modelBuilder.Entity("Forecasting.Predictions.entity.Prediction", b =>
+                {
+                    b.Property<int>("PredictionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("prediction_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PredictionId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("PredictedSales")
+                        .HasColumnType("integer")
+                        .HasColumnName("predicted_sales");
+
+                    b.Property<DateTime>("PredictedWeek")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("predicted_week");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer")
+                        .HasColumnName("product_id");
+
+                    b.HasKey("PredictionId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("predictions");
+                });
+
             modelBuilder.Entity("Forecasting.Products.Entity.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -254,6 +286,17 @@ namespace Forecasting.Migrations
                         .IsRequired();
 
                     b.Navigation("Goal");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Forecasting.Predictions.entity.Prediction", b =>
+                {
+                    b.HasOne("Forecasting.Products.Entity.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
                 });

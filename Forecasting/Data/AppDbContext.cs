@@ -1,6 +1,7 @@
 ﻿using Forecasting.Goals.Entity;
 using Forecasting.Products.Entity;
 using Forecasting.Sales.Entity;
+using Forecasting.Predictions.entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Forecasting.Data
@@ -13,6 +14,7 @@ namespace Forecasting.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<GoalStatus> GoalStatus { get; set; }
         public DbSet<SuggestedDiscount> SuggestedDiscounts { get; set; }
+        public DbSet<Prediction> Predictions { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
