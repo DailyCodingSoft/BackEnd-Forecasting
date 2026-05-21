@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Forecasting.Sales;
 using Forecasting.Predictions;
 using Forecasting.Goals.Services;
+using Forecasting.Predictions.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,8 @@ builder.Services.AddScoped<GoalStatusRepository>();
 builder.Services.AddScoped<GoalsService>();
 builder.Services.AddScoped<SuggestedDiscountRepository>();
 builder.Services.AddScoped<SuggestedDiscountService>();
+builder.Services.AddScoped<PredictionRepository>();
+builder.Services.AddScoped<PredictionService>();
 var engineUrl = Environment.GetEnvironmentVariable("ml-engine-url");
 builder.Services.AddHttpClient<PredictionClient>( client =>
 {
