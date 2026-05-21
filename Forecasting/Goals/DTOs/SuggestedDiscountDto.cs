@@ -4,6 +4,7 @@ namespace Forecasting.Goals.DTOs
     {
         public int SuggestedDiscountId { get; set; }
         public required string Identificator { get; set; }
+        
         public int GoalId { get; set; }
         public required string ProductName { get; set; }
         public decimal MinimumPrice { get; set; }
