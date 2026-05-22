@@ -14,7 +14,7 @@ namespace Forecasting.Predictions.Services
             var prediction = new Prediction
             {
                 ProductId = product.ProductId,
-                PredictedWeek = DateTime.Parse(forecastResponse.week),
+                PredictedWeek = DateTime.SpecifyKind(DateTime.Parse(forecastResponse.week), DateTimeKind.Utc),
                 PredictedSales = forecastResponse.sales,
                 Product = product
             };
