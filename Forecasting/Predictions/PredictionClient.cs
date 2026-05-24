@@ -3,7 +3,7 @@ using Forecasting.Predictions.Services;
 
 namespace Forecasting.Predictions
 {
-    public class PredictionClient(HttpClient _httpClient, PredictionService _predictionService)
+    public class PredictionClient(HttpClient _httpClient)
     {
         public async Task<ForecastResponse?> GetPrediction(
             string productIdentifier
@@ -11,7 +11,7 @@ namespace Forecasting.Predictions
         {
             try
             {
-                var response = await _httpClient
+                ForecastResponse? response = await _httpClient
                     .GetFromJsonAsync<ForecastResponse>(
                         $"/forecast/{productIdentifier}"
                     );

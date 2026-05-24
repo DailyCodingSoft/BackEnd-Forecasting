@@ -9,12 +9,10 @@ namespace Forecasting.Controllers
     public class PredictionsController(PredictionClient _predictionClient) : ControllerBase
     {
         [HttpGet("{product_identifier}")]
-        public async Task<ActionResult<ForecastResponse>> GetForecast(
-            string product_identifier
-        )
+        public async Task<ActionResult<ForecastResponse>> GetForecast(string product_identifier)
         {
-            var response = await _predictionClient
-                .GetPrediction(product_identifier);
+            
+            ForecastResponse? response = await _predictionClient.GetPrediction(product_identifier);
 
             if (response == null)
                 return NoContent();
