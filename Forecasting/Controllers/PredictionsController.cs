@@ -15,7 +15,11 @@ namespace Forecasting.Controllers
         [HttpGet("{product_identifier}")]
         public async Task<ActionResult<ForecastResponse>> GetForecast(string product_identifier)
         {
-            ForecastResponse response = await _predictionClient.GetPrediction(product_identifier);
+            
+            ForecastResponse? response = await _predictionClient.GetPrediction(product_identifier);
+
+            if (response == null)
+                return NoContent();
 
             Response.OnCompleted(async () =>
             {
