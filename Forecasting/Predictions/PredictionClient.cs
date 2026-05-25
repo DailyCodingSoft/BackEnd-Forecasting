@@ -10,7 +10,7 @@ namespace Forecasting.Predictions
         {
             try
             {
-                ForecastResponse? response = await _httpClient
+                var response = await _httpClient
                     .GetFromJsonAsync<ForecastResponse>(
                         $"/forecast/{productIdentifier}"
                     );
@@ -24,7 +24,6 @@ namespace Forecasting.Predictions
                 {
                     return null;
                 }
-                return response ?? throw new Exception("Error getting prediction");
 
                 throw;
             }
