@@ -24,6 +24,7 @@ namespace Forecasting.Predictions
                 {
                     return null;
                 }
+                return response ?? throw new Exception("Error getting prediction");
 
                 throw;
             }
