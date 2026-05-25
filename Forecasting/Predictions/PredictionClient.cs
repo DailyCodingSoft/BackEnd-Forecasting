@@ -10,7 +10,7 @@ namespace Forecasting.Predictions
         {
             try
             {
-                var response = await _httpClient
+                ForecastResponse? response = await _httpClient
                     .GetFromJsonAsync<ForecastResponse>(
                         $"/forecast/{productIdentifier}"
                     );

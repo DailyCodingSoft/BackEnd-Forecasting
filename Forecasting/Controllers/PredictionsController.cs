@@ -13,11 +13,10 @@ namespace Forecasting.Controllers
         ILogger<PredictionsController> _logger) : ControllerBase
     {
         [HttpGet("{product_identifier}")]
-        public async Task<ActionResult<ForecastResponse>> GetForecast(
-            string product_identifier
-        )
+        public async Task<ActionResult<ForecastResponse>> GetForecast(string product_identifier)
         {
-            ForecastResponse response = await _predictionClient.GetPrediction(product_identifier);
+            
+            ForecastResponse? response = await _predictionClient.GetPrediction(product_identifier);
 
             if (response == null)
                 return NoContent();
