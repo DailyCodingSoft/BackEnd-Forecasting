@@ -26,7 +26,7 @@ namespace Forecasting.Controllers
                 if (upsertProducts)
                     await _salesService.SaveSaleListWithProductsAsync(sales);
                 else
-                    _salesService.SaveSaleList(sales);
+                    await _salesService.SaveSaleList(sales);
 
                 return Ok("Sale List Saved Correctly!.");
             }

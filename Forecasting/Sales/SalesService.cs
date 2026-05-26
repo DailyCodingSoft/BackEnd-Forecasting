@@ -12,15 +12,26 @@ namespace Forecasting.Sales
         ProductsRepository _productsRepository,
         CategoryRepository _categoryRepository)
     {
-        public void SaveSaleList(SalesDto sales)
+        public async Task SaveSaleList(SalesDto sales)
         {
-            List<Sale> list = [];
-            foreach (SaleDto saleDto in sales.Rows)
+            List<string> identificators = sales.Rows
+                .Select(s => s.Identificator)
+                .Distinct()
+                .ToList();
+            var products = await _productsRepository.GetProductsByIdentificatorsAsync(identificators);
+            var productsByIdentificator = products.ToDictionary(p => p.Identificator);
+            var salesToInsert = new List<Sale>();
+            foreach (var saleDto in sales.Rows)
             {
-                Sale saleToSave = SalesMapper.MapSaleDtoToSale(saleDto, GetSaleProduct(saleDto.Identificator));
-                list.Add(saleToSave);
+                if (!productsByIdentificator.TryGetValue(saleDto.Identificator, out var product))
+                {
+                    throw new KeyNotFoundException(
+                        $"Producto con identificador {saleDto.Identificator} no encontrado.");
+                }
+
+                salesToInsert.Add(SalesMapper.MapSaleDtoToSale(saleDto, product));
             }
-            _salesRepository.AddRange(list);
+            await _salesRepository.AddRangeAsync(salesToInsert);
         }
 
         private Product GetSaleProduct(string identificator)
