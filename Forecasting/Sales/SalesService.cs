@@ -12,7 +12,7 @@ namespace Forecasting.Sales
         ProductsRepository _productsRepository,
         CategoryRepository _categoryRepository)
     {
-        public void SaveSaleList(SalesDto sales)
+        public async Task SaveSaleList(SalesDto sales)
         {
             List<Sale> list = [];
             foreach (SaleDto saleDto in sales.Rows)
@@ -20,7 +20,7 @@ namespace Forecasting.Sales
                 Sale saleToSave = SalesMapper.MapSaleDtoToSale(saleDto, GetSaleProduct(saleDto.Identificator));
                 list.Add(saleToSave);
             }
-            _salesRepository.AddRange(list);
+            await _salesRepository.AddRangeAsync(list);
         }
 
         private Product GetSaleProduct(string identificator)
