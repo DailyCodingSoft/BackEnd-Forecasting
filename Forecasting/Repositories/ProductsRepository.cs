@@ -37,5 +37,11 @@ namespace Forecasting.Repositories
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
         }
+        public async Task<List<Product>> GetProductsByIdentificatorsAsync(List<string> identificators)
+        {
+            return await _context.Products
+                .Where(p => identificators.Contains(p.Identificator))
+                .ToListAsync();
+        }
     }
 }
