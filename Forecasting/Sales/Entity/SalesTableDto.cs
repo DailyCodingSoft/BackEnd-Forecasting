@@ -2,7 +2,6 @@
 {
     public class SalesTableDto
     {
-        public required SaleDto[] Rows { get; set; }
-        public required string[] Columns {  get; set; }
+        public required SalesTableRowDto[] Rows { get; set; }
     }
 }

@@ -9,14 +9,13 @@ namespace Forecasting.Utils
         {
             SalesTableDto salesDto = new()
             {
-                Columns = [.. typeof(SaleDto).GetProperties().Select(p => ChangeFirstLetterToLowerCase(p.Name))],
-                Rows = [.. sales.Select(MapSaleToSaleDto)]
+                Rows = [.. sales.Select(MapSaleToSalesTableRowDto)]
             };
 
             return salesDto;
         }
 
-        private static SaleDto MapSaleToSaleDto(Sale sale) => new()
+        private static SalesTableRowDto MapSaleToSalesTableRowDto(Sale sale) => new()
         {
             ProductName = sale.Product.ProductName,
             Identificator = sale.Product.Identificator,
@@ -33,13 +32,5 @@ namespace Forecasting.Utils
             Week = saleDto.Week,
             Date = saleDto.Date
         };
-
-        private static string ChangeFirstLetterToLowerCase(string columnName)
-        {
-            string result = "";
-            result += columnName[0].ToString().ToLower();
-            result += columnName.Substring(1);
-            return result;
-        }
     }
 }

@@ -8,7 +8,8 @@ services:
     ports:
       - "5289:5289"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - ml-engine-url=http://ml-engine:8000
       - ASPNETCORE_URLS=http://+:5289
@@ -25,10 +26,16 @@ services:
       POSTGRES_DB: forecastingprod
 
     volumes:
-      - /opt/postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
 
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d forecastingprod"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   ml-engine:
     build: ../../ML-Engine-Forecasting
@@ -40,3 +47,6 @@ services:
       - API_URL=http://api:5289
     ports:
       - "8000:8000"
+
+volumes:
+  postgres-data:
