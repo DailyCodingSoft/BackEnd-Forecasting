@@ -37,5 +37,15 @@ namespace Forecasting.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("history")]
+        public async Task<ActionResult<List<PredictionWeekGroupDto>>> GetPredictionHistory()
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var predictionService = scope.ServiceProvider.GetRequiredService<PredictionService>();
+            var result = await predictionService.GetPredictionHistory();
+            return Ok(result);
+        }
     }
 }

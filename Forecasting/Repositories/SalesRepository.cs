@@ -52,8 +52,11 @@ namespace Forecasting.Repositories
         //    return result;
         //}
 
-        public async Task<List<Sale>> GetSalesByProductInDateRange(string? identificator, DateTime? from, DateTime? to, int? week, int? year){
+        public async Task<List<Sale>> GetSalesByProductInDateRange(
+            string? identificator, DateTime? from, DateTime? to, int? week, int? year)
+        {
             var query = _context.Sales.Include(s => s.Product).AsQueryable();
+
             if (week.HasValue)
             {
                 int targetYear = year ?? DateTime.UtcNow.Year;
@@ -65,14 +68,12 @@ namespace Forecasting.Repositories
                 DateTime toUtc = DateTime.SpecifyKind(to.Value.Date.AddDays(1).AddTicks(-1), DateTimeKind.Utc);
                 query = query.Where(s => s.Date >= fromUtc && s.Date <= toUtc);
             }
-            else
-            {
-                return [];
-            }
+            // ← ya no hay else que retorne vacío
 
             if (!string.IsNullOrEmpty(identificator))
                 query = query.Where(s => s.Product.Identificator == identificator);
 
+            // Si no vino ningún filtro, retorna todo
             return await query.ToListAsync();
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Forecasting.Predictions.entity;
 using Forecasting.Repositories;
+using Forecasting.Utils;
 
 namespace Forecasting.Predictions.Services
 {
@@ -20,6 +21,12 @@ namespace Forecasting.Predictions.Services
             };
 
             await _predictionRepository.AddPredictionAsync(prediction);
+        }
+
+        public async Task<List<PredictionWeekGroupDto>> GetPredictionHistory()
+        {
+            var predictions = await _predictionRepository.GetAllPredictions();
+            return PredictionsMapper.MapToWeekGroups(predictions);
         }
     }
 }
