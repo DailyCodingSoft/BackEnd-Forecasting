@@ -52,33 +52,28 @@ namespace Forecasting.Repositories
         //    return result;
         //}
 
-        public async Task<List<Sale>> GetSalesByProductInDateRange(string? identificator, DateTime? from, DateTime? to)
-        {
-            if (from.HasValue && to.HasValue) {
-                DateTime? fromUtc = DateTime.SpecifyKind(from.Value, DateTimeKind.Utc);
-                DateTime? toUtc = DateTime.SpecifyKind(to.Value.Date.AddDays(1).AddTicks(-1), DateTimeKind.Utc);
-                if (string.IsNullOrEmpty(identificator)) {
-                    return await _context.Sales.Include(s => s.Product)
-                        .Where(s => s.Date <= toUtc && s.Date >= fromUtc)
-                        .ToListAsync();
-                }
-                else
-                {
-                    return await _context.Sales.Include(s => s.Product)
-                        .Where(s => s.Product.Identificator == identificator)
-                        .Where(s => s.Date <= toUtc && s.Date >= fromUtc)
-                        .ToListAsync();
-                }
-            }else if(!string.IsNullOrEmpty(identificator))
+        public async Task<List<Sale>> GetSalesByProductInDateRange(string? identificator, DateTime? from, DateTime? to, int? week, int? year){
+            var query = _context.Sales.Include(s => s.Product).AsQueryable();
+            if (week.HasValue)
             {
-                return await _context.Sales.Include(s => s.Product)
-                    .Where(s => s.Product.Identificator == identificator)
-                    .ToListAsync();
+                int targetYear = year ?? DateTime.UtcNow.Year;
+                query = query.Where(s => s.Week == week.Value && s.Date.Year == targetYear);
+            }
+            else if (from.HasValue && to.HasValue)
+            {
+                DateTime fromUtc = DateTime.SpecifyKind(from.Value, DateTimeKind.Utc);
+                DateTime toUtc = DateTime.SpecifyKind(to.Value.Date.AddDays(1).AddTicks(-1), DateTimeKind.Utc);
+                query = query.Where(s => s.Date >= fromUtc && s.Date <= toUtc);
             }
             else
             {
                 return [];
             }
+
+            if (!string.IsNullOrEmpty(identificator))
+                query = query.Where(s => s.Product.Identificator == identificator);
+
+            return await query.ToListAsync();
         }
     }
 }

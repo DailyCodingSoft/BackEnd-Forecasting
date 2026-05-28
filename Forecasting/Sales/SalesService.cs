@@ -68,9 +68,9 @@ namespace Forecasting.Sales
         //    return new ProductSalesResponseDto { Products = productDtos };
         //}
 
-        public async Task<SalesTableDto> GetSalesByProductInDateRange(string? identificator, DateTime? from, DateTime? to)
-        {
-            List<Sale> dbSales = await _salesRepository.GetSalesByProductInDateRange(identificator, from, to);
+        public async Task<SalesTableDto> GetSalesByProductInDateRange(string? identificator, DateTime? from, DateTime? to, int? week, int? year){
+            List<Sale> dbSales = await _salesRepository.GetSalesByProductInDateRange(
+                identificator, from, to, week, year);
             return SalesMapper.MapSaleListToSalesTableDto(dbSales);
         }
 
