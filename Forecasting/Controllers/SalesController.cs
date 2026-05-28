@@ -48,7 +48,8 @@ namespace Forecasting.Controllers
         [Route("grouped")]
         public async Task<ActionResult<SalesTableDto>> GetSalesGrouped([FromBody] SalesGroupedRequestDto request)
         {
-            var result = await _salesService.GetSalesByProductInDateRange(request.Identificator, request.From, request.To);
+            var result = await _salesService.GetSalesByProductInDateRange(
+                request.Identificator, request.From, request.To, request.Week, request.Year);
             return Ok(result);
         }
     }
